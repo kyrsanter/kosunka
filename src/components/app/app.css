@@ -1,0 +1,9 @@
+.game-top {
+    display: flex;
+}
+
+.columns-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

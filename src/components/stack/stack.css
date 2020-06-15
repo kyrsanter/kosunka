@@ -1,0 +1,19 @@
+:root {
+    --main-top: 10px;
+}
+
+.stack {
+    width: calc(50% / 6);
+    position: relative;
+}
+
+.stack .card {
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.stack .card img{
+    max-width: 100%;
+    transform: scale(3.6);
+}

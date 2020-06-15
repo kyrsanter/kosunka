@@ -1,0 +1,4 @@
+.column {
+    width: calc(50% / 6);
+    position: relative;
+}
