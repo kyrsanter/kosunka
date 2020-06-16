@@ -7,6 +7,7 @@ const initialState = {
         stack: [] as [] | Array<CardType>,
         columns: [] as [] | Array<ColumnType>,
         remainingCards: [] as [] | Array<CardType>,
+        turnedStackCards: [] as [] | Array<CardType>,
         aces: [
             {
                 suite: 'S',
@@ -110,38 +111,51 @@ export const mainReducer = (state = initialState, action: CombinedMainTypes): In
         break;
 
         case "DROP_CARD_TO_COLUMN":
-            let {id: cardId, suite: cardSuite, col: cardCol} = action.payload;
-            let cardName = cardId + cardSuite;
+            // let {id: cardId, suite: cardSuite, col: cardCol} = action.payload;
+            let {idsArr, col: cardCol} = action.payload;
 
+            // let cardName = cardId + cardSuite;
 
             /*LOOKING FOR RELATIVE COLUMNS FOR PAYLOAD CARD AND CARD*/
             for (let i = 0; i < state.gameField.columns.length; i++) {
+                let newColumnWithoutPayloadCard;
                 let payloadCardContainer = state.gameField.columns[i];
-                let payloadCardIdx = payloadCardContainer.cards.findIndex( (card) => card.name === cardName);
-                if (payloadCardIdx && payloadCardIdx !== -1) {
-                    let payloadCard = payloadCardContainer.cards[payloadCardIdx];
+                let payloadCardIdx = payloadCardContainer.cards.findIndex( (card) => card.name === idsArr[0]);
+                if (payloadCardIdx.toString() && payloadCardIdx !== -1) {
+                    // let payloadCard = payloadCardContainer.cards[payloadCardIdx];
+                    let payloadCard = payloadCardContainer.cards.filter(c => {
+                        for (let i = 0; i < idsArr.length; i++) {
+                            if (idsArr[i] === c.name) {
+                                return c;
+                            }
+                        }
+                    });
                     /* get back the payload card from its column */
                     // @ts-ignore
                     let payloadCardArrayContainerBefore = payloadCardContainer.cards.slice(0, payloadCardIdx);
                     // @ts-ignore
-                    let payloadCardArrayContainerAfter = payloadCardContainer.cards.slice(payloadCardIdx + 1, payloadCardContainer.length);
+                    let payloadCardArrayContainerAfter = payloadCardContainer.cards.slice(payloadCardIdx + idsArr.length, payloadCardContainer.length);
                     let newPayloadCardArray = [...payloadCardArrayContainerBefore, ...payloadCardArrayContainerAfter]; // without payload card
-
-                    newPayloadCardArray[newPayloadCardArray.length - 1].turned = true;
-                    debugger
-                    let newColumnWithoutPayloadCard = {
-                        order: i,
-                        cards: newPayloadCardArray
-                    };
-
+                    if (newPayloadCardArray.length === 0) {
+                        newColumnWithoutPayloadCard = {
+                            order: i,
+                            cards: []
+                        };
+                    }
+                    else {
+                        newPayloadCardArray[newPayloadCardArray.length - 1].turned = true;
+                        newColumnWithoutPayloadCard = {
+                            order: i,
+                            cards: newPayloadCardArray
+                        };
+                    }
                     let columnToAddCards = state.gameField.columns[cardCol]; // cards in the column to add the card
                     let columnToAddCardsIdx = state.gameField.columns[cardCol].order;
 
                     let newColumnToAddCards = {
                         ...columnToAddCards,
-                        cards: [...columnToAddCards.cards, payloadCard]
+                        cards: [...columnToAddCards.cards, ...payloadCard]
                     };
-
                     if (i < columnToAddCardsIdx) {
                         let columnsBefore = state.gameField.columns.slice(0, i);
                         let columnsCenter = state.gameField.columns.slice(i + 1, columnToAddCardsIdx);
@@ -173,12 +187,6 @@ export const mainReducer = (state = initialState, action: CombinedMainTypes): In
                 }
             }
 
-
-
-            //
-            // let columns = [...state.gameField.columns, columnToAddCards];
-            // console.log(columns);
-
             return {
                 ...state,
                 gameField: {
@@ -187,7 +195,23 @@ export const mainReducer = (state = initialState, action: CombinedMainTypes): In
                         ...state.gameField.columns,
                     ]
                 }
-            }
+            };
+            case "TURN_OVER_STACK_CARD":
+                debugger
+                if (state.gameField.remainingCards.length === 0) {
+                    return state;
+                }
+                let lastCard = state.gameField.remainingCards[state.gameField.remainingCards.length - 1];
+                lastCard.turned = true;
+                let remainingCardsBefore = state.gameField.remainingCards.slice(0, state.gameField.remainingCards.length - 1);
+                return {
+                    ...state,
+                    gameField: {
+                        ...state.gameField,
+                        remainingCards: [...remainingCardsBefore],
+                        turnedStackCards: [...state.gameField.turnedStackCards, lastCard]
+                    }
+                };
 
         default:
             return state;

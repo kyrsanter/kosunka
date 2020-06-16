@@ -37,7 +37,7 @@ const mapStateToProps = (state: StateType) => {
 };
 
 const mapDispatchToProps = {
-    dropCardToColumn: (col: number, id: number, suite: string) => dropCardToColumnThunk(col, id, suite)
+    dropCardToColumn: (col: number, idsArr: Array<string>) => dropCardToColumnThunk(col, idsArr)
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

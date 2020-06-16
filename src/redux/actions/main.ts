@@ -1,9 +1,15 @@
-import {DropCardActionCreatorType, DropCardToColumnActionCreatorType, StartGameActionCreatorType} from "./types";
+import {
+    DropCardActionCreatorType,
+    DropCardToColumnActionCreatorType,
+    StartGameActionCreatorType,
+    TurnOverStackCardActionCreatorType
+} from "./types";
 import {CardType, ColumnType} from "../../types";
 
 export const START_GAME = 'START_GAME';
 export const DROP_CARD = 'DROP_CARD';
 export const DROP_CARD_TO_COLUMN = 'DROP_CARD_TO_COLUMN';
+export const TURN_OVER_STACK_CARD = 'TURN_OVER_STACK_CARD';
 
 export const startGameActionCreator = (stack: Array<CardType>, remainingCards: Array<CardType>, columns: Array<ColumnType>): StartGameActionCreatorType => ({
     type: START_GAME,
@@ -22,12 +28,18 @@ export const dropCardActionCreator = (id: number, suite: string): DropCardAction
     }
 });
 
-export const dropCardToColumnActionCreator = (col: number, id: number, suite: string): DropCardToColumnActionCreatorType => ({
+export const dropCardToColumnActionCreator = (col: number, idsArr: Array<string>): DropCardToColumnActionCreatorType => ({
     type: DROP_CARD_TO_COLUMN,
     payload: {
-        id,
-        suite,
-        col
+        col,
+        idsArr
     }
 });
+
+export const turnOverStackCardActionCreator = (cardName: string): TurnOverStackCardActionCreatorType => {
+    return {
+        type: TURN_OVER_STACK_CARD,
+        payload: cardName
+    }
+}
 

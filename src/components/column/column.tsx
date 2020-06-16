@@ -7,7 +7,7 @@ import Card from "../card/card";
 type PropsType = {
     cards: Array<CardType>
     col: number
-    dropCardToColumn: (col: number, id: number, suite: string) => void
+    dropCardToColumn: (col: number, idsArr: Array<string>) => void
 }
 
 const Column: FC<PropsType> = (props) => {
@@ -16,6 +16,7 @@ const Column: FC<PropsType> = (props) => {
 
             <div className='column'>
                 {
+                    props.cards.length === 0 ? <Card col={props.col} name={"none"} turned={false} id={"0A"} dropCardToColumn={props.dropCardToColumn}/> :
                     props.cards.map( (card, idx) => {
                         if (card.turned) {
                             return <Card

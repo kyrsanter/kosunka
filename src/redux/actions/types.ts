@@ -1,4 +1,4 @@
-import {DROP_CARD, DROP_CARD_TO_COLUMN, START_GAME} from "./main";
+import {DROP_CARD, DROP_CARD_TO_COLUMN, START_GAME, TURN_OVER_STACK_CARD} from "./main";
 import {CardType, ColumnType} from "../../types";
 
 export type StartGameActionCreatorType = {
@@ -21,10 +21,14 @@ export type DropCardActionCreatorType = {
 export type DropCardToColumnActionCreatorType = {
     type: typeof DROP_CARD_TO_COLUMN,
     payload: {
-        id: number
-        suite: string
+        idsArr: Array<string>
         col: number
     }
 }
 
-export type CombinedMainTypes = StartGameActionCreatorType | DropCardActionCreatorType | DropCardToColumnActionCreatorType
+export type TurnOverStackCardActionCreatorType = {
+    type: typeof TURN_OVER_STACK_CARD
+    payload: string
+}
+
+export type CombinedMainTypes = StartGameActionCreatorType | DropCardActionCreatorType | DropCardToColumnActionCreatorType | TurnOverStackCardActionCreatorType

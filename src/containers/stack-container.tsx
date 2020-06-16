@@ -2,7 +2,7 @@ import React, {FC, useEffect} from "react";
 import {connect, ConnectedProps} from "react-redux";
 import {StateType} from "../redux/store";
 import Stack from "../components/stack/stack";
-import {dropCardThunk} from "../redux/thunk";
+import {dropCardThunk, turnOverStackCardThunk} from "../redux/thunk";
 
 
 const StackContainer: FC<PropsFromReduxType> = (props) => {
@@ -14,7 +14,7 @@ const StackContainer: FC<PropsFromReduxType> = (props) => {
 
     return (
         <>
-            <Stack dropCard={props.dropCard} remainingCards={remainingCards}/>
+            <Stack turnOverCard={props.turnOverCard} remainingCards={remainingCards} turnedCards={props.turnedCards}/>
         </>
     )
 };
@@ -22,12 +22,13 @@ const StackContainer: FC<PropsFromReduxType> = (props) => {
 
 const mapStateToProps = (state: StateType) => {
     return {
-        remainingCards: state.game.gameField.remainingCards
+        remainingCards: state.game.gameField.remainingCards,
+        turnedCards: state.game.gameField.turnedStackCards
     }
 };
 
 const mapDispatchToProps = {
-    dropCard: (id: number, suite: string) => dropCardThunk(id, suite)
+    turnOverCard: (cardName: string) => turnOverStackCardThunk(cardName)
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

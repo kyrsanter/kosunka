@@ -2,9 +2,9 @@ import {GameService} from "../service/game-service";
 import {
     dropCardActionCreator,
     dropCardToColumnActionCreator,
-    startGameActionCreator
+    startGameActionCreator, turnOverStackCardActionCreator
 } from "./actions/main";
-import store from "./store";
+
 
 const service = new GameService();
 
@@ -17,6 +17,11 @@ export const dropCardThunk = (id: number, suite: string) => (dispatch: any) => {
     dispatch(dropCardActionCreator(id, suite))
 };
 
-export const dropCardToColumnThunk = (col: number, id: number, suite: string) => (dispatch: any) => {
-    dispatch(dropCardToColumnActionCreator(col, id, suite))
+export const dropCardToColumnThunk = (col: number, idsArr: Array<string>) => (dispatch: any) => {
+    dispatch(dropCardToColumnActionCreator(col, idsArr))
 };
+
+export const turnOverStackCardThunk = (cardName: string) => (dispatch: any) => {
+    debugger
+    dispatch(turnOverStackCardActionCreator(cardName))
+}

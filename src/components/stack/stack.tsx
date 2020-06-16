@@ -5,18 +5,57 @@ import Card from "../card/card";
 
 type PropsType = {
     remainingCards: Array<CardType>
-    dropCard: (id: number, suite: string) => void
+    turnedCards: [] | Array<CardType>
+    turnOverCard: (cardName: string) => void
 }
 
 const Stack: FC<PropsType> = (props) => {
     let {remainingCards} = props;
+
+    let turnOverCard = () => {
+        props.turnOverCard('aa')
+    };
+
+    // @ts-ignore
     return (
-        <div className="stack">
+        <div
+            onClick={turnOverCard}
+            className="stack">
+            <div className="a">
                 {
                     remainingCards.map( (card: CardType, i: number) => {
-                        return <Card dropCard={props.dropCard} key={i} id={card.name} name={card.name} turned={card.turned}/>
+                        if (!card.turned) {
+                            return (
+                                    <Card
+                                        key={i} id={card.name}
+                                        name={card.name}
+                                        turned={card.turned}/>
+                            )
+                        }
                     })
                 }
+            </div>
+            {
+                props.turnedCards.length ? (
+                    <div className="base">
+                        {
+                            //@ts-ignore
+                            props.turnedCards.map( (card: CardType, i: number) => {
+                                if (card.turned) {
+                                    return (
+                                        <Card
+                                            key={i}
+                                            id={card.name}
+                                            name={card.name}
+                                            turned={card.turned}/>
+                                    )
+                                }
+                            })
+                        }
+                    </div>
+                ) : null
+            }
+
         </div>
     )
 };

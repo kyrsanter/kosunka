@@ -94,5 +94,5 @@
 .fewCards {
     position: absolute;
     z-index: -99;
-    opacity: 0 !important;
+    left: -1000000px;
 }

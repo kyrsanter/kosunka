@@ -3,17 +3,40 @@
 }
 
 .stack {
-    width: calc(50% / 6);
+    width: calc(100% / 6);
     position: relative;
+    display: flex;
 }
 
-.stack .card {
-    width: 100%;
+.stack .a .card {
+    width: 50%;
     position: absolute;
     top: 0;
 }
 
-.stack .card img{
+.stack .base .card {
+    width: 50%;
+    position: absolute;
+    top: 0;
+}
+
+.stack .a .card img{
     max-width: 100%;
     transform: scale(3.6);
+}
+
+.stack .base .card img{
+    max-width: 100%;
+    transform: scale(3.6);
+}
+
+.a {
+    width: 50%;
+    height: 100%;
+}
+
+.base {
+    margin-left: 10px;
+    width: 50%;
+    height: 100%;
 }
